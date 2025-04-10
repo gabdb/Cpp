@@ -1,8 +1,6 @@
 #ifndef PHONEBOOK_H
 # define PHONEBOOK_H
 
-#include <iostream>
-#include <string>
 #include "contact.hpp"
 #include "utils.hpp"
 
