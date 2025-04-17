@@ -31,7 +31,17 @@ void	PhoneBook::addContact(void)
 	eof_signal();
 	this->arrayContact[this->currentIndex % 8].setNickName(str);
 
-	//...
+	//PhoneNumber
+	std::cout << "Phone number: ";
+	std::getline(std::cin, str);
+	eof_signal();
+	this->arrayContact[this->currentIndex % 8].setPhoneNumber(str);
+
+	//Secret
+	std::cout << "Darkest secret: ";
+	std::getline(std::cin, str);
+	eof_signal();
+	this->arrayContact[this->currentIndex % 8].setDarkestSecret(str);
 
 	std::cout << "new contact added !" << std::endl;
 	this->currentIndex++;
