@@ -6,21 +6,20 @@
 
 class PhoneBook
 {
+	private:
 
-    private:
+		int     currentIndex;
+		Contact arrayContact[8];
 
-        int     currentIndex;
-        Contact arrayContact[8];
+	public:
 
-    public:
-
-        PhoneBook();
-        ~PhoneBook() = default;
-        void    addContact();
-        void    searchContact();
-        Contact getContact(int index);
-        void    displayInfo(std::string str);
-        void    displayContact(Contact _Contact, int i);
+		PhoneBook();
+		~PhoneBook() = default;
+		void	addContact();
+		void	searchContact();
+		Contact	getContact(int index);
+		void	displayInfo(std::string str);
+		void	displayContact(Contact _Contact, int i);
 };
 
 
