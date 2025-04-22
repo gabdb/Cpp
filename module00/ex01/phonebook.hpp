@@ -16,11 +16,10 @@ class PhoneBook
 		PhoneBook();
 		~PhoneBook() = default;
 		void	addContact();
-		void	searchContact();
+		//void	searchContact();
 		Contact	getContact(int index);
 		void	displayInfo(std::string str);
 		void	displayContact(Contact _Contact, int i);
 };
-
 
 #endif

@@ -6,6 +6,11 @@ PhoneBook::PhoneBook(void)
 	return ;
 }
 
+Contact	PhoneBook::getContact(int index)
+{
+	return (this->arrayContact[index]);
+}
+
 void	PhoneBook::addContact(void)
 {
 	std::string	str;
@@ -45,4 +50,32 @@ void	PhoneBook::addContact(void)
 
 	std::cout << "new contact added !" << std::endl;
 	this->currentIndex++;
+}
+
+void	PhoneBook::displayContact(Contact _Contact, int i)
+{
+	std::cout << i;
+	for (int j = 0; j < 3; j++)
+	{
+		std::cout << "|";
+		if (j == 0)
+			print_word(_Contact.getFirstName());
+		if (j == 1)
+			print_word(_Contact.getLastName());
+		if (j == 2)
+			print_word(_Contact.getNickName());
+	}
+	std::cout << "|" << std::endl;
+}
+
+void	PhoneBook::displayInfo(std::string str)
+{
+	int i;
+
+	i = str[0] - 48;
+	std::cout << "First name: " << this->arrayContact[i].getFirstName() << std::endl;
+	std::cout << "Last name: " << this->arrayContact[i].getLastName() << std::endl;
+	std::cout << "Nickname: " << this->arrayContact[i].getNickName() << std::endl;
+	std::cout << "Phonenumber: " << this->arrayContact[i].getPhoneNumber() << std::endl;
+	std::cout << "Darkest secret: " << this->arrayContact[i].getDarkestSecret() << std::endl;
 }
