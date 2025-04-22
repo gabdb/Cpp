@@ -33,7 +33,6 @@ int main(void)
 			{
 				std::cout << "Enter index of contact you wish to see: ";
 				std::getline(std::cin, str);
-				std::cout << "STR.SIZE() IS " << str.size() << std::endl;
 				while (str.size() > 1 || str[0] - 48 > nb_contacts - 1 || str[0] - 48 < 0)
 				{
 					std::cout << "Please enter a valid number: ";
