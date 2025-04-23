@@ -35,6 +35,7 @@ int main(void)
 				std::getline(std::cin, str);
 				while (str.size() > 1 || str[0] - 48 > nb_contacts - 1 || str[0] - 48 < 0)
 				{
+					eof_signal();
 					std::cout << "Please enter a valid number: ";
 					std::getline(std::cin, str);
 				}

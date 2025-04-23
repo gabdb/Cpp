@@ -23,5 +23,6 @@ void	print_word(std::string str)
 	{
 		for (int i = 0; i < 9; i++)
 			std::cout << str[i];
+		std::cout << '.';
 	}
 }
