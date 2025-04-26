@@ -34,3 +34,21 @@ int	Account::getNbWithdrawals(void)
 
 // Constructors
 
+Account::Account(int initial_deposit) : 
+_amount(initial_deposit), _nbDeposits(0), _nbWithdrawals(0)
+{
+	_displayTimestamp();
+	_accountIndex = _nbAccounts;
+	_totalAmount += initial_deposit;
+    std::cout << "index:" << this->_accountIndex << ";amount:"
+        << this->_amount << ";created" << std::endl;
+	_nbAccounts++;
+}
+
+Account::~Account()
+{
+	_displayTimestamp();
+    std::cout << "index:" << this->_accountIndex << ";amount:"
+              << this->_amount << ";closed" << std::endl;
+}
+
