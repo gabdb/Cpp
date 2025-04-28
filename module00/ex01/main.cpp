@@ -17,8 +17,7 @@ int main(void)
 			break;
 		else if (str == "ADD")
 		{
-			Directory.addContact();
-			if (nb_contacts < 8)
+			if (Directory.addContact() && nb_contacts < 8)
 				nb_contacts++;
 		}
 		else if (str == "SEARCH")

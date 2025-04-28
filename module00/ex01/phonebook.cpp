@@ -11,55 +11,75 @@ Contact	PhoneBook::getContact(int index)
 	return (this->arrayContact[index]);
 }
 
-void	PhoneBook::addContact(void)
+int	PhoneBook::addContact(void)
 {
-	std::string	str;
+	std::string	str[5];
 
-	str = "";
+	str[0] = "";
 	std::cout << "\nNew contact, please enter information" << std::endl;
 
 	//First Name
 	std::cout << "First Name: ";
-	std::getline(std::cin, str);
-	if (str.size() == 0)
-		str = "/";
+	std::getline(std::cin, str[0]);
+	if (str[0].size() == 0)
+	{
+		std::cout << "Empty argument (non valid) !" << std::endl;
+		return 0;
+	}
 	eof_signal();
-	this->arrayContact[this->currentIndex % 8].setFirstName(str);
 
 	//Last Name
+	str[1] = "";
 	std::cout << "Last Name: ";
-	std::getline(std::cin, str);
-	if (str.size() == 0)
-		str = "/";
+	std::getline(std::cin, str[1]);
+	if (str[1].size() == 0)
+	{
+		std::cout << "Empty argument (non valid) !" << std::endl;
+		return 0;
+	}
 	eof_signal();
-	this->arrayContact[this->currentIndex % 8].setLastName(str);
 
 	//Nickname
+	str[2] = "";
 	std::cout << "Nickname: ";
-	std::getline(std::cin, str);
-	if (str.size() == 0)
-		str = "/";
+	std::getline(std::cin, str[2]);
+	if (str[2].size() == 0)
+	{
+		std::cout << "Empty argument (non valid) !" << std::endl;
+		return 0;
+	}
 	eof_signal();
-	this->arrayContact[this->currentIndex % 8].setNickName(str);
 
 	//PhoneNumber
+	str[3] = "";
 	std::cout << "Phone number: ";
-	std::getline(std::cin, str);
-	if (str.size() == 0)
-		str = "/";
+	std::getline(std::cin, str[3]);
+	if (str[3].size() == 0)
+	{
+		std::cout << "Empty argument (non valid) !" << std::endl;
+		return 0;
+	}
 	eof_signal();
-	this->arrayContact[this->currentIndex % 8].setPhoneNumber(str);
 
 	//Secret
+	str[4] = "";
 	std::cout << "Darkest secret: ";
-	std::getline(std::cin, str);
-	if (str.size() == 0)
-		str = "/";
+	std::getline(std::cin, str[4]);
+	if (str[4].size() == 0)
+	{
+		std::cout << "Empty argument (non valid) !" << std::endl;
+		return 0;
+	}
 	eof_signal();
-	this->arrayContact[this->currentIndex % 8].setDarkestSecret(str);
+	this->arrayContact[this->currentIndex % 8].setFirstName(str[0]);
+	this->arrayContact[this->currentIndex % 8].setLastName(str[1]);
+	this->arrayContact[this->currentIndex % 8].setNickName(str[2]);
+	this->arrayContact[this->currentIndex % 8].setPhoneNumber(str[3]);
+	this->arrayContact[this->currentIndex % 8].setDarkestSecret(str[4]);
 
 	std::cout << "new contact added !" << std::endl;
 	this->currentIndex++;
+	return (1);
 }
 
 void	PhoneBook::displayContact(Contact _Contact, int i)

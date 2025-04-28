@@ -15,7 +15,7 @@ class PhoneBook
 
 		PhoneBook();
 		~PhoneBook() = default;
-		void	addContact();
+		int		addContact();
 		//void	searchContact();
 		Contact	getContact(int index);
 		void	displayInfo(std::string str);
