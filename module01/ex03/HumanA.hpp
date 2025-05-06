@@ -4,9 +4,11 @@
 
 class HumanA
 {
-    private:
+	private:
 		Weapon& weapon;
 		std::string name;
-    public:
-		
+	public:
+		HumanA(std::string nom, Weapon& arme);
+		~HumanA() = default;
+		void	attack(void);
 };
