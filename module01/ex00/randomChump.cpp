@@ -8,6 +8,6 @@ void    randomChump(std::string name)
 		return ;
 	}
 
-	Zombie newZombie(name);
-	newZombie.announce();
+	Zombie stackZombie(name);
+	stackZombie.announce();
 }

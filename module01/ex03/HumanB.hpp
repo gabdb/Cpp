@@ -12,7 +12,6 @@ class HumanB
 		HumanB(std::string nom);
 		HumanB(std::string nom, Weapon& arme);
 		~HumanB() = default;
-
 		void	setWeapon(Weapon& arme);
 		void	attack(void);
 };

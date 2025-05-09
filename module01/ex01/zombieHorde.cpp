@@ -13,12 +13,12 @@ Zombie* zombieHorde(int N, std::string name)
 		return nullptr;
 	}
 	Zombie *horde = new Zombie[N];
-	Zombie temp = Zombie(name);
+	Zombie temp(name);
 	for (int i = 0; i < N; i++)
 	{
 		horde[i] = temp;
 		(horde + i)->announce();
 	}
-	std::cout << "\nstack alloc 'temp' destroyed: ";
+	std::cout << "\ndestruction of stack_alloc 'temp': ";
 	return (horde);
 }

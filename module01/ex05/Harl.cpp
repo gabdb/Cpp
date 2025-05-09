@@ -42,5 +42,5 @@ void    Harl::complain(std::string level)
             return ;
         }
     }
-    std::cout << "Please try entering an existing option" << std::endl;
+    std::cout << "Try entering an existing option..." << std::endl;
 }
