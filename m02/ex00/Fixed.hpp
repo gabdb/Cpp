@@ -6,7 +6,7 @@
 class Fixed
 {
     private:
-        int					_value;
+        int					_rawBits;
         static const int	_8bits;
     public:
 		Fixed();
@@ -14,5 +14,5 @@ class Fixed
 		Fixed& operator=(const Fixed& other);
 		~Fixed();
 		int		getRawBits(void) const;
-		void	setRawBits(int const raw);
+		void	setRawBits(const int raw);
 };
