@@ -28,8 +28,11 @@ void    replace_str(char **av, std::ifstream& infile, std::ofstream& outfile)
     std::string line;
     std::size_t cursor;
 
+    int i = 0;
     while (std::getline(infile, line))
     {
+        if (i > 0)
+            outfile << std::endl;
         cursor = 0;
         while ((cursor = line.find(s1, cursor)) != std::string::npos)
         {
@@ -37,6 +40,7 @@ void    replace_str(char **av, std::ifstream& infile, std::ofstream& outfile)
             line.insert(cursor, s2);
             cursor += s2.size();
         }
-        outfile << line << std::endl;
+        outfile << line;
+        i++;
     }
 }
