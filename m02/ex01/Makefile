@@ -1,4 +1,4 @@
-NAME = OCF
+NAME = fixed
 
 SRCS = main.cpp Fixed.cpp
 
