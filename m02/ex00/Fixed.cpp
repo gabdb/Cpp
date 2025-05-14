@@ -1,7 +1,7 @@
 
 #include "Fixed.hpp"
 
-const int Fixed::_8bits = 8;
+const int Fixed::_fracBits = 8;
 
 Fixed::Fixed() : _rawBits(0)
 {
