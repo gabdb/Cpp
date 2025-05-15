@@ -2,7 +2,7 @@
 
 #include <iostream>
 #include <string>
-
+#include <cmath>
 
 class Fixed
 {
@@ -18,7 +18,8 @@ class Fixed
 		~Fixed();
 		int		getRawBits(void) const;
 		void	setRawBits(const int raw);
-		int		toInt(void);
-		float	toFloat(void);
+		int		toInt(void) const;
+		float	toFloat(void) const;
 };
-std::ofstream&	operator<<(std::ofstream& output, Fixed& point);
+
+std::ostream&	operator<<(std::ostream& output, const Fixed& point);
