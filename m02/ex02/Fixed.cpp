@@ -64,3 +64,79 @@ std::ostream& operator<<(std::ostream& output, const Fixed& point)
     output << point.toFloat();
     return (output);
 }
+
+bool    Fixed::operator>(const Fixed& f) const
+{
+    return (this->_rawBits > f._rawBits);
+}
+
+bool    Fixed::operator<(const Fixed& f) const
+{
+    return (this->_rawBits < f._rawBits);
+}
+
+bool    Fixed::operator>=(const Fixed& f) const
+{
+    return (this->_rawBits >= f._rawBits);
+}
+
+bool    Fixed::operator<=(const Fixed& f) const
+{
+    return (this->_rawBits <= f._rawBits);
+}
+
+bool    Fixed::operator==(const Fixed& f) const
+{
+    return (this->_rawBits == f._rawBits);
+}
+
+bool    Fixed::operator!=(const Fixed& f) const
+{
+    return (this->_rawBits != f._rawBits);
+}
+
+Fixed	Fixed::operator+(const Fixed& f) const
+{
+	return Fixed(this->toFloat() + f.toFloat());
+}
+
+Fixed	Fixed::operator-(const Fixed& f) const
+{
+	return Fixed(this->toFloat() - f.toFloat());
+}
+
+Fixed	Fixed::operator*(const Fixed& f) const
+{
+	return Fixed(this->toFloat() * f.toFloat());
+}
+
+Fixed	Fixed::operator/(const Fixed& f) const
+{
+	return Fixed(this->toFloat() / f.toFloat());
+}
+
+Fixed& Fixed::operator++(void)
+{
+    ++_rawBits;
+    return *this;
+}
+
+Fixed& Fixed::operator--(void)
+{
+    --_rawBits;
+    return *this;
+}
+
+Fixed Fixed::operator++(int)
+{
+    Fixed old = *this;
+    ++_rawBits;
+    return old;
+}
+
+Fixed Fixed::operator--(int)
+{
+    Fixed old = *this;
+    --_rawBits;
+    return old;
+}
