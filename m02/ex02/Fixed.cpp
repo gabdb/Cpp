@@ -117,26 +117,46 @@ Fixed	Fixed::operator/(const Fixed& f) const
 
 Fixed& Fixed::operator++(void)
 {
-    ++_rawBits;
+    _rawBits += 1;
     return *this;
 }
 
 Fixed& Fixed::operator--(void)
 {
-    --_rawBits;
+    _rawBits -= 1;
     return *this;
 }
 
 Fixed Fixed::operator++(int)
 {
-    Fixed old = *this;
-    ++_rawBits;
+    Fixed old(*this);
+    _rawBits += 1;
     return old;
 }
 
 Fixed Fixed::operator--(int)
 {
-    Fixed old = *this;
-    --_rawBits;
+    Fixed old(*this);
+    _rawBits -= 1;
     return old;
+}
+
+Fixed& Fixed::min(Fixed& f1, Fixed& f2)
+{
+	return f1._rawBits <= f2._rawBits ? f1 : f2;
+}
+
+const Fixed& Fixed::min(const Fixed& f1, const Fixed& f2)
+{
+	return f1._rawBits <= f2._rawBits ? f1 : f2;
+}
+
+Fixed& Fixed::max(Fixed& f1, Fixed& f2)
+{
+	return f1._rawBits >= f2._rawBits ? f1 : f2;
+}
+
+const Fixed& Fixed::max(const Fixed& f1, const Fixed& f2)
+{
+	return f1._rawBits >= f2._rawBits ? f1 : f2;
 }
