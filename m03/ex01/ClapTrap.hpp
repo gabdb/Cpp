@@ -6,7 +6,7 @@
 
 class ClapTrap
 {
-	private:
+	protected: //protected ~= shared private among Base and Derived classes
 		std::string		_name;
 		unsigned int	_hitPoints;
 		unsigned int	_energyPoints;
