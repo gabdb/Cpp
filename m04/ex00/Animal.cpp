@@ -5,9 +5,8 @@ Animal::Animal() : type("Undefined")
 {
 	std::cout << "Animal default ctor called" << std::endl;
 }
-Animal::Animal(const Animal& other)
+Animal::Animal(const Animal& other) : type(other.type)
 {
-	type = other.type;
 	std::cout << "Animal copy ctor called" << std::endl;
 }
 
