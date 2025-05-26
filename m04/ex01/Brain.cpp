@@ -46,7 +46,7 @@ std::string Brain::getIdea(int index) const
 	if (index >= 100 || index < 0)
 	{
 		std::cout << "incorrect index, returning NULL" << std::endl;
-		return (NULL);
+		return ("");
 	}
 	return (this->ideas[index]);
 }

@@ -2,7 +2,7 @@
 #include "Dog.hpp"
 #include "Cat.hpp"
 
-/*
+
 int main()
 {
     const Animal* meta = new Animal();
@@ -22,8 +22,8 @@ int main()
 
     return 0;
 }
-*/
 
+/*
 #include "WrongAnimal.hpp"
 #include "WrongCat.hpp"
 
@@ -43,3 +43,4 @@ int main()
 
 	return 0;
 }
+*/
