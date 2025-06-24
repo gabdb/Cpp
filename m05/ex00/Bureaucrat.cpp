@@ -5,7 +5,7 @@ Bureaucrat::Bureaucrat() {}
 
 Bureaucrat::Bureaucrat(const Bureaucrat& other) : name(other.name), grade(other.grade) {}
 
-Bureaucrat::Bureaucrat(unsigned int grade, const std::string name) : grade(grade), name(name)
+Bureaucrat::Bureaucrat(unsigned int grade, const std::string name) : name(name), grade(grade)
 {
 	if (grade > 150)
 		throw GradeTooLowException();
@@ -63,5 +63,6 @@ const char* Bureaucrat::GradeTooLowException::what() const throw()
 
 std::ostream& operator<<(std::ostream& out, const Bureaucrat& other)
 {
-	out << "Bureaucrat's name: " << other.getName() << "and grade: " << other.getGrade();
+	out << "Bureaucrat's name: " << other.getName() << ", and grade: " << other.getGrade();
+	return (out);
 }
