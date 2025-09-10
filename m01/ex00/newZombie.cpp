@@ -7,7 +7,7 @@ Zombie *newZombie(std::string name)
     if (name.empty())
     {
         std::cerr << "Error: empty field for 'name'" << std::endl;
-        return (nullptr);
+        return (NULL);
     }
     ptr = new Zombie(name);
     ptr->announce();
