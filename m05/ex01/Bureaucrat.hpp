@@ -9,8 +9,9 @@ class Bureaucrat
 	private:
 		const std::string	name;
 		unsigned int		grade;
-	public:
 		Bureaucrat();
+
+	public:
 		Bureaucrat(unsigned int grade, const std::string name);
 		Bureaucrat(const Bureaucrat& other);
 		~Bureaucrat();
@@ -20,6 +21,8 @@ class Bureaucrat
 		unsigned int		getGrade() const;
 		void				incrementGrade();
 		void				decrementGrade();
+
+		
 
 		class GradeTooHighException : public std::exception
 		{

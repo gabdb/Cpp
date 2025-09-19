@@ -9,8 +9,9 @@ class Bureaucrat
 	private:
 		const std::string	name;
 		unsigned int		grade;
+		Bureaucrat(); //pas cense creer un Bureaucrat() sans param, pcq name est const
+
 	public:
-		Bureaucrat();
 		Bureaucrat(unsigned int grade, const std::string name);
 		Bureaucrat(const Bureaucrat& other);
 		~Bureaucrat();
