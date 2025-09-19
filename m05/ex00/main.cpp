@@ -8,7 +8,10 @@ int main()
         Bureaucrat b(1,  "Boss");
         Bureaucrat c(150,"Clerk");
 
-        std::cout << a << "\n" << b << "\n" << c << std::endl;
+        std::cout << a << std::endl;
+        std::cout << b << std::endl;
+        std::cout << c << std::endl;
+
     }
     catch (std::exception& e) {
         std::cerr << "Error: " << e.what() << "\n";
