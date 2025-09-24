@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 
+class Form;
 
 class Bureaucrat
 {
@@ -22,7 +23,7 @@ class Bureaucrat
 		void				incrementGrade();
 		void				decrementGrade();
 
-		
+		void				signForm(Form& form) const;
 
 		class GradeTooHighException : public std::exception
 		{

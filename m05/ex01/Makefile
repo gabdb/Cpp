@@ -1,14 +1,18 @@
 
-NAME      = bureaucrat
-SRCS      = main.cpp Bureaucrat.cpp
+NAME      = form
+
+SRCS      = main.cpp Bureaucrat.cpp Form.cpp
+
 OBJS      = $(SRCS:.cpp=.o)
 
 CXX       = c++
+
 CXXFLAGS  = -Wall -Wextra -Werror -std=c++98
+
+RM        = rm -rf
 
 all: $(NAME)
 
-# Link
 $(NAME): $(OBJS)
 	$(CXX) $(CXXFLAGS) $^ -o $@
 
@@ -17,10 +21,10 @@ $(NAME): $(OBJS)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(OBJS)
+	$(RM) $(OBJS)
 
 fclean: clean
-	rm -f $(NAME)
+	$(RM) $(NAME)
 
 re: fclean all
 

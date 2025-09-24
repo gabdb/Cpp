@@ -1,10 +1,16 @@
 
 NAME      = bureaucrat
+
 SRCS      = main.cpp Bureaucrat.cpp
+
 OBJS      = $(SRCS:.cpp=.o)
 
 CXX       = c++
+
 CXXFLAGS  = -Wall -Wextra -Werror -std=c++98
+
+RM        = rm -rf
+
 
 all: $(NAME)
 
@@ -17,10 +23,10 @@ $(NAME): $(OBJS)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(OBJS)
+	$(RM) $(OBJS)
 
 fclean: clean
-	rm -f $(NAME)
+	$(RM) $(NAME)
 
 re: fclean all
 
