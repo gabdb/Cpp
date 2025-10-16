@@ -5,8 +5,8 @@
 #include <fstream>
 #include <string>
 
-
-class Bureaucrat;
+#include "Bureaucrat.hpp"
+//class Bureaucrat;
 
 class AForm
 {
@@ -25,7 +25,7 @@ class AForm
 		virtual ~AForm();
 		AForm& operator=(const AForm& other);
 
-		const			std::string getName() const;
+		std::string 	getName() const;
 		bool			getIsSigned() const;
 		unsigned int	getGradeToSign() const;
 		unsigned int	getGradeToExec() const;

@@ -2,7 +2,7 @@
 #include "Form.hpp"
 #include "Bureaucrat.hpp"
 
-Form::Form() : _name("no_name"), _gradeToSign(0), _gradeToExec(0) {}
+Form::Form() : _name("no_name"), _isSigned(false),  _gradeToSign(0), _gradeToExec(0) {} //do not call
 
 Form::Form(const std::string name, const unsigned int gradeToSign, const unsigned int gradeToExec) :
 _name(name), _isSigned(false), _gradeToSign(gradeToSign), _gradeToExec(gradeToExec)
@@ -31,7 +31,7 @@ Form& Form::operator=(const Form& other)
 	return (*this);
 }
 
-const std::string Form::getName() const
+std::string Form::getName() const
 {
 	return (_name);
 }
@@ -59,17 +59,17 @@ void	Form::beSigned(const Bureaucrat& bcrat)
 		std::cout << bcrat.getName() << " signed " << _name << std::endl;
 	}
 	else
-		throw Form::GradeTooHighException();
+		throw Form::GradeTooLowException();
 }
 
 const char*	Form::GradeTooHighException::what() const throw()
 {
-	return ("Form Grade Too High");
+	return ("Grade Too High");
 }
 
 const char* Form::GradeTooLowException::what() const throw()
 {
-	return ("Form Grade Too Low");
+	return ("Grade Too Low");
 }
 
 std::ostream& operator<<(std::ostream& out, const Form& other)

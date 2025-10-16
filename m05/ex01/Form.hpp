@@ -17,7 +17,7 @@ class Form
 		~Form();
 		Form& operator=(const Form& other);
 
-		const			std::string getName() const;
+		std::string 	getName() const;
 		bool			getIsSigned() const;
 		unsigned int	getGradeToSign() const;
 		unsigned int	getGradeToExec() const;
