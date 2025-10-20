@@ -27,7 +27,7 @@ void    ShrubberyCreationForm::execute(const Bureaucrat& bcrat) const
         throw FormNotSignedException();
     if (bcrat.getGrade() > this->getGradeToExec())
         throw GradeTooLowException();
-    std::ofstream file((this->_target) + "_shrubbery");
+    std::ofstream file(((this->_target) + "_shrubbery").c_str());
     if (!(file.is_open()))
         throw std::runtime_error("Failed to open output file.");
     else

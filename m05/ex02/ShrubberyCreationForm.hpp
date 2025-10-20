@@ -4,12 +4,15 @@
 #include "AForm.hpp"
 #include "Bureaucrat.hpp"
 
-# define TREE "	 /\\n\
-    			/  \\n\
-     		   /++++\\n\
-    		  /  ()  \\n\
-      		    ||||\n\
-      			||||"
+static const char* TREE =
+"          ^             \n"
+"         /^\\            \n"
+"        /^^^\\           \n"
+"       /^^^^^\\          \n"
+"      /^^^^^^^\\         \n"
+"     /^^^^^^^^^\\        \n"
+"         |||            \n"
+"         |||            \n";
 
 class ShrubberyCreationForm : public AForm
 {
