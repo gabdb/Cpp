@@ -26,7 +26,6 @@ void    RobotomyRequestForm::execute(const Bureaucrat& bcrat) const
     for(int i = 0; i < 3; i++)
         std::cout << "Making some drilling noises ..." << std::endl;
 
-    //std::srand(std::time(NULL)); //init. un generateur aleatoire
     if (std::rand() % 2)
         std::cout << _target << " has been robotomized successfully!" << std::endl;
     else
