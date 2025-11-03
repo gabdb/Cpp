@@ -52,7 +52,7 @@ void	print_int(std::string& str)
 
 bool	is_float(std::string& str)
 {
-	if (str.find("f") == (str.find(".") + 2))
+	if (str[str.size() - 1] == 'f' && str.find('.') != std::string::npos)
 		return true;
 	else
 		return false;
