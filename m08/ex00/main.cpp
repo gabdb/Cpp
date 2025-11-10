@@ -20,11 +20,11 @@ int main(void)
     std::deque<int> deq;
     for (int i = 0; i < 10; i++)
     {
-        deq.push_back(i * 5);
-        std::cout << "deque[" << i << "]" << ": " << deq[i] << std::endl;
+        deq.push_front(i * 5);
+        std::cout << "deque[" << i << "]" << ": " << deq[0] << std::endl;
     }
 
-    const std::deque<int> &ref_deq = deq; //version read-only de 'list'
+    const std::deque<int> &ref_deq = deq; //version read-only de 'deq'
     std::cout << std::endl;
     try {
         std::deque<int>::const_iterator it = easyfind(ref_deq, 5);

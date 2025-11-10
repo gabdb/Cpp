@@ -20,6 +20,7 @@ typename T::iterator	easyfind(T& container, int nb)
     return result;
 }
 
+
 //const overload pr gerer les inputs const
 template <typename T>
 typename T::const_iterator	easyfind(const T& container, int nb)
@@ -31,4 +32,3 @@ typename T::const_iterator	easyfind(const T& container, int nb)
 		throw std::runtime_error("Value not found !");
 	return result;
 }
-
