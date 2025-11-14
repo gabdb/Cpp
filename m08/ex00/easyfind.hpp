@@ -6,7 +6,6 @@
 #include <algorithm>
 #include <vector>
 #include <deque>
-#include <list>
 
 
 template <typename T> //T sera un type de container

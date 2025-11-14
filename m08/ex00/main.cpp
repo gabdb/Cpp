@@ -12,6 +12,9 @@ int main(void)
     try {
         std::vector<int>::iterator it = easyfind(vect, 9);
         std::cout << *it << std::endl;
+
+        std::vector<int>::iterator it2 = easyfind(vect, 20); // 20 nest pas dans le container
+        std::cout << *it2 << std::endl;
     } catch (std::exception& e) {
         std::cout << "Error : " << e.what() << std::endl;
     }
@@ -29,6 +32,9 @@ int main(void)
     try {
         std::deque<int>::const_iterator it = easyfind(ref_deq, 5);
         std::cout << *it << std::endl;
+
+        std::deque<int>::const_iterator it2 = easyfind(ref_deq, 28); // 28 nest pas dans le deque
+        std::cout << *it2 << std::endl;
     } catch (std::exception& e) {
         std::cout << "Error : " << e.what() << std::endl;
     }

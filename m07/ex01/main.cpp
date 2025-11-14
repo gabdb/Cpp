@@ -16,7 +16,7 @@ template <typename T>   void increment(T& x)
 
 int main()
 {
-    // --- Test 1: integers ---
+    // Test 1: integers
     int numbers[] = {1, 2, 3, 4, 5};
     size_t len = 5;
     std::cout << "Original int array:" << std::endl;
@@ -31,7 +31,7 @@ int main()
 
 
 
-    // --- Test 2: strings ---
+    // Test 2: strings
     std::string words[] = {"hi", "there", "friend"};
     len = 3;
     std::cout << "String array:" << std::endl;
@@ -40,7 +40,7 @@ int main()
 
 
 
-    // --- Test 3: const array (read-only) ---
+    // Test 3: const array (read-only)
     const float values[] = {1.1, 2.2, 3.3};
     len = 3;
     std::cout << "Const float array:" << std::endl;
