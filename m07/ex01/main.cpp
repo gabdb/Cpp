@@ -18,7 +18,7 @@ int main()
 {
     // Test 1: integers
     int numbers[] = {1, 2, 3, 4, 5};
-    size_t len = 5;
+    unsigned int len = 5;
     std::cout << "Original int array:" << std::endl;
     iter(numbers, len, printElement<int>);
     std::cout << std::endl;
