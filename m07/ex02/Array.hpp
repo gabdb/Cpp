@@ -13,7 +13,7 @@ template <typename T>   class Array {
     public:
 		Array() : _size(0), array(NULL) {}
 
-		Array(unsigned int n) : _size(n), array(new T[n]) {}
+		Array(unsigned int n) : _size(n), array(new T[n]()) {} //a voir si garder dernier ()
 
 		Array(const Array& other) : _size(other._size), array(new T[_size])
 		{
