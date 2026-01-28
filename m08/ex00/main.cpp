@@ -10,7 +10,7 @@ int main(void)
     }
     std::cout << std::endl;
     try {
-        std::vector<int>::iterator it = easyfind(vect, 9);
+        std::vector<int>::iterator it = easyfind(vect, 16);
         std::cout << *it << std::endl;
 
         std::vector<int>::iterator it2 = easyfind(vect, 20); // 20 nest pas dans le container
@@ -24,7 +24,7 @@ int main(void)
     for (int i = 0; i < 10; i++)
     {
         deq.push_front(i * 5);
-        std::cout << "deque[" << i << "]" << ": " << deq[0] << std::endl;
+        std::cout << "deque[" << i << "]" << ": " << deq[0] << std::endl; //deq[0] pcq pushfront fait que deq[i] est tjrs 0 * 5
     }
 
     const std::deque<int> &ref_deq = deq; //version read-only de 'deq'
