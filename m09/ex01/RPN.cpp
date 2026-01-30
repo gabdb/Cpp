@@ -31,14 +31,14 @@ void applyOperator(std::stack<int> &st, char op)
 	switch (op)
 	{
 		case '+':
-		result = left + right;
-		break;
+			result = left + right;
+			break;
 		case '-':
-		result = left - right;
-		break;
+			result = left - right;
+			break;
 		case '*':
-		result = left * right;
-		break;
+			result = left * right;
+			break;
 		case '/':
 			if (right == 0)
 			{

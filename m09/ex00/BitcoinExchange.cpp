@@ -19,7 +19,7 @@ BitcoinExchange &BitcoinExchange::operator=(const BitcoinExchange &other)
 
 BitcoinExchange::~BitcoinExchange() {}
 
-//charger data_base.csv dans _rates
+//charger la DB data.csv dans _rates
 void BitcoinExchange::loadDatabase(const std::string &databasePath)
 {
 	std::ifstream file(databasePath.c_str());
