@@ -161,7 +161,9 @@ std::vector<int> PmergeMe::fordJohnsonSortVector(const std::vector<int>& input)
         int b = input[i + 1];
         if (a > b)
         {
-            int tmp = a; a = b; b = tmp;
+            int tmp = a;
+            a = b;
+            b = tmp;
         }
         pairs.push_back(std::make_pair(a, b));
     }
@@ -239,7 +241,9 @@ std::deque<int> PmergeMe::fordJohnsonSortDeque(const std::deque<int>& input)
         int b = input[i + 1];
         if (a > b)
         {
-            int tmp = a; a = b; b = tmp;
+            int tmp = a;
+            a = b;
+            b = tmp;
         }
         pairs.push_back(std::make_pair(a, b));
     }
