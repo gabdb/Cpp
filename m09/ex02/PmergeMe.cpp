@@ -1,477 +1,317 @@
 
 #include "PmergeMe.hpp"
 
+#include <vector>
+#include <deque>
+#include <climits>
 
-long long PmergeMe::nowMicros()
+PmergeMe::PmergeMe() {}
+PmergeMe::PmergeMe(const PmergeMe& other) { (void)other; }
+PmergeMe& PmergeMe::operator=(const PmergeMe& other) { (void)other; return *this; }
+PmergeMe::~PmergeMe() {}
+
+double PmergeMe::nowMicros()
 {
-    timeval currentTime;
-
-    gettimeofday(&currentTime, 0);
-    return ((long long)currentTime.tv_sec * 1000000LL + (long long)currentTime.tv_usec);
+    timeval t;
+    gettimeofday(&t, 0);
+    return (t.tv_sec * 1000000.0 + t.tv_usec);
 }
 
-//fct qui definit ordre d'insertion small -> main
+
 std::vector<size_t> PmergeMe::buildJacobsthalOrder(size_t pendingCount)
 {
-    std::vector<size_t> insertionOrder;
-    size_t              jacobPrev2;
-    size_t              jacobPrev1;
-    size_t              previousLimit;
-    size_t              currentLimit;
+    std::vector<size_t> order;
 
     if (pendingCount == 0)
+        return order;
+
+    order.push_back(1);
+
+    size_t prev = 1;
+    size_t curr = 3;
+
+    while (prev < pendingCount)
     {
-        return (insertionOrder);
+        size_t blockHigh = (curr < pendingCount) ? curr : pendingCount;
+
+        for (size_t i = blockHigh; i > prev; --i)
+            order.push_back(i);
+
+        size_t next = curr + 2 * prev;
+        prev = curr;
+        curr = next;
     }
-    insertionOrder.push_back(1);
-    jacobPrev2 = 0;
-    jacobPrev1 = 1;
-    previousLimit = 1;
-    currentLimit = 3;
-    while (previousLimit < pendingCount)
-    {
-        size_t blockHigh;
-
-        blockHigh = currentLimit;
-        if (blockHigh > pendingCount)
-        {
-            blockHigh = pendingCount;
-        }
-        for (size_t index = blockHigh; index > previousLimit; --index)
-        {
-            insertionOrder.push_back(index);
-        }
-
-        size_t nextJacob;
-
-        nextJacob = jacobPrev1 + 2 * jacobPrev2;
-        jacobPrev2 = jacobPrev1;
-        jacobPrev1 = nextJacob;
-
-        previousLimit = currentLimit;
-        currentLimit = jacobPrev1;
-        if (currentLimit <= previousLimit)
-        {
-            currentLimit = previousLimit + 1;
-        }
-    }
-    return (insertionOrder);
+    return order;
 }
 
-template <typename Sequence>
-size_t PmergeMe::lowerBoundIndex(const Sequence& sequence, int value, size_t left, size_t right)
+template <typename Seq>
+size_t PmergeMe::lowerBoundIndex(const Seq& seq, int value, size_t left, size_t right)
 {
     while (left < right)
     {
-        size_t middle;
-
-        middle = left + (right - left) / 2;
-        if (sequence[middle] < value)
-        {
-            left = middle + 1;
-        }
+        size_t mid = left + (right - left) / 2;
+        if (seq[mid] < value)
+            left = mid + 1;
         else
+            right = mid;
+    }
+    return left;
+}
+
+template <typename Seq>
+void PmergeMe::insertAt(Seq& seq, size_t pos, int value)
+{
+    typename Seq::iterator it = seq.begin();
+    for (size_t i = 0; i < pos; ++i)
+        ++it;
+    seq.insert(it, value);
+}
+
+void printVectorSequence(const std::vector<int>& seq)
+{
+    for (size_t i = 0; i < seq.size(); ++i)
+    {
+        std::cout << seq[i];
+        if (i + 1 < seq.size())
+            std::cout << " ";
+    }
+}
+
+size_t indexOfValueVector(const std::vector<int>& seq, int value)
+{
+    for (size_t i = 0; i < seq.size(); ++i)
+        if (seq[i] == value)
+            return i;
+    return seq.size();
+}
+
+size_t indexOfValueDeque(const std::deque<int>& seq, int value)
+{
+    for (size_t i = 0; i < seq.size(); ++i)
+        if (seq[i] == value)
+            return i;
+    return seq.size();
+}
+
+void reorderPairsBySortedBigsVector(std::vector< std::pair<int,int> >& pairs, const std::vector<int>& sortedBigs)
+{
+    std::vector< std::pair<int,int> > ordered;
+    std::vector<char> used(pairs.size(), 0);
+
+    ordered.reserve(pairs.size());
+
+    for (size_t i = 0; i < sortedBigs.size(); ++i)
+    {
+        int big = sortedBigs[i];
+        for (size_t j = 0; j < pairs.size(); ++j)
         {
-            right = middle;
+            if (!used[j] && pairs[j].second == big)
+            {
+                ordered.push_back(pairs[j]);
+                used[j] = 1;
+                break;
+            }
         }
     }
-    return (left);
+    pairs.swap(ordered);
 }
 
-template <typename Sequence>
-void PmergeMe::insertAt(Sequence& sequence, size_t position, int value)
+void reorderPairsBySortedBigsDeque(std::deque< std::pair<int,int> >& pairs, const std::deque<int>& sortedBigs)
 {
-    typename Sequence::iterator iter;
+    std::deque< std::pair<int,int> > ordered;
+    std::vector<char> used(pairs.size(), 0);
 
-    iter = sequence.begin();
-    for (size_t i = 0; i < position; ++i)
+    for (size_t i = 0; i < sortedBigs.size(); ++i)
     {
-        ++iter;
-    }
-    sequence.insert(iter, value);
-}
-
-static void mergePairRangeVector(std::vector< std::pair<int, int> >& pairs,
-                                 std::vector< std::pair<int, int> >& buffer,
-                                 size_t left,
-                                 size_t middle,
-                                 size_t right)
-{
-    size_t i;
-    size_t j;
-    size_t k;
-
-    i = left;
-    j = middle;
-    k = left;
-    while (i < middle && j < right)
-    {
-        if (pairs[i].second <= pairs[j].second)
+        int big = sortedBigs[i];
+        for (size_t j = 0; j < pairs.size(); ++j)
         {
-            buffer[k] = pairs[i];
-            ++i;
+            if (!used[j] && pairs[j].second == big)
+            {
+                ordered.push_back(pairs[j]);
+                used[j] = 1;
+                break;
+            }
         }
-        else
-        {
-            buffer[k] = pairs[j];
-            ++j;
-        }
-        ++k;
     }
-    while (i < middle)
-    {
-        buffer[k] = pairs[i];
-        ++i;
-        ++k;
-    }
-    while (j < right)
-    {
-        buffer[k] = pairs[j];
-        ++j;
-        ++k;
-    }
-    for (size_t index = left; index < right; ++index)
-    {
-        pairs[index] = buffer[index];
-    }
-}
-
-static void mergeSortPairsVectorRec(std::vector< std::pair<int, int> >& pairs,
-                                   std::vector< std::pair<int, int> >& buffer,
-                                   size_t left,
-                                   size_t right)
-{
-    if (right - left <= 1)
-        return ;
-
-    size_t middle;
-
-    middle = left + (right - left) / 2;
-    mergeSortPairsVectorRec(pairs, buffer, left, middle);
-    mergeSortPairsVectorRec(pairs, buffer, middle, right);
-    mergePairRangeVector(pairs, buffer, left, middle, right);
-}
-
-void PmergeMe::mergeSortPairsVector(std::vector< std::pair<int, int> >& pairs)
-{
-    std::vector< std::pair<int, int> > buffer;
-
-    if (pairs.size() < 2)
-        return ;
-        
-    buffer.resize(pairs.size());
-    mergeSortPairsVectorRec(pairs, buffer, 0, pairs.size());
+    pairs.swap(ordered);
 }
 
 std::vector<int> PmergeMe::fordJohnsonSortVector(const std::vector<int>& input)
 {
-    std::vector< std::pair<int, int> > pairs;
-    std::vector<int>                   mainChain;
-    bool                               hasStraggler;
-    int                                stragglerValue;
-    size_t                             processCount;
-
     if (input.size() <= 1)
-    {
-        return (input);
-    }
+        return input;
 
-    hasStraggler = (input.size() % 2) != 0;
-    stragglerValue = 0;
-    processCount = input.size();
+    const bool hasStraggler = (input.size() % 2) != 0;
+    int stragglerValue = 0;
+    size_t processCount = input.size();
+
     if (hasStraggler)
     {
         stragglerValue = input[input.size() - 1];
         processCount = input.size() - 1;
     }
 
+    std::vector< std::pair<int,int> > pairs;
     pairs.reserve(processCount / 2);
-    for (size_t index = 0; index < processCount; index += 2)
-    {
-        int firstValue;
-        int secondValue;
 
-        firstValue = input[index];
-        secondValue = input[index + 1];
-        if (firstValue > secondValue)
+    for (size_t i = 0; i < processCount; i += 2)
+    {
+        int a = input[i];
+        int b = input[i + 1];
+        if (a > b)
         {
-            int tmp;
-
-            tmp = firstValue;
-            firstValue = secondValue;
-            secondValue = tmp;
+            int tmp = a; a = b; b = tmp;
         }
-        pairs.push_back(std::make_pair(firstValue, secondValue));
-    }
-
-    mergeSortPairsVector(pairs);
-
-    mainChain.reserve(input.size());
-    mainChain.push_back(pairs[0].first);
-    for (size_t i = 0; i < pairs.size(); ++i)
-    {
-        mainChain.push_back(pairs[i].second);
+        pairs.push_back(std::make_pair(a, b));
     }
 
     if (pairs.size() > 1)
     {
-        size_t              pendingCount;
-        std::vector<size_t> insertionOrder;
+        std::vector<int> bigs;
+        bigs.reserve(pairs.size());
+        for (size_t i = 0; i < pairs.size(); ++i)
+            bigs.push_back(pairs[i].second);
 
-        pendingCount = pairs.size() - 1;
-        insertionOrder = buildJacobsthalOrder(pendingCount);
+        std::vector<int> sortedBigs = fordJohnsonSortVector(bigs);
+        reorderPairsBySortedBigsVector(pairs, sortedBigs);
+    }
 
-        for (size_t oi = 0; oi < insertionOrder.size(); ++oi)
+    std::vector<int> mainChain;
+    mainChain.reserve(input.size());
+
+    mainChain.push_back(pairs[0].first);
+    for (size_t i = 0; i < pairs.size(); ++i)
+        mainChain.push_back(pairs[i].second);
+
+    if (pairs.size() > 1)
+    {
+        const size_t pendingCount = pairs.size() - 1;
+        const std::vector<size_t> order = buildJacobsthalOrder(pendingCount);
+
+        for (size_t oi = 0; oi < order.size(); ++oi)
         {
-            size_t pairIndex;
-
-            pairIndex = insertionOrder[oi];
+            const size_t pairIndex = order[oi];
             if (pairIndex == 0 || pairIndex >= pairs.size())
-            {
-                continue ;
-            }
+                continue;
 
-            int    smallValue;
-            int    largeValue;
-            size_t boundIndex;
+            const int smallValue = pairs[pairIndex].first;
+            const int bigValue   = pairs[pairIndex].second;
 
-            smallValue = pairs[pairIndex].first;
-            largeValue = pairs[pairIndex].second;
+            size_t boundIndex = indexOfValueVector(mainChain, bigValue);
+            if (boundIndex > mainChain.size())
+                boundIndex = mainChain.size();
 
-            boundIndex = 0;
-            while (boundIndex < mainChain.size() && mainChain[boundIndex] != largeValue)
-            {
-                ++boundIndex;
-            }
-
-            size_t insertIndex;
-
-            insertIndex = lowerBoundIndex(mainChain, smallValue, 0, boundIndex);
+            const size_t insertIndex = lowerBoundIndex(mainChain, smallValue, 0, boundIndex);
             insertAt(mainChain, insertIndex, smallValue);
         }
     }
 
     if (hasStraggler)
     {
-        size_t insertIndex;
-
-        insertIndex = lowerBoundIndex(mainChain, stragglerValue, 0, mainChain.size());
+        const size_t insertIndex = lowerBoundIndex(mainChain, stragglerValue, 0, mainChain.size());
         insertAt(mainChain, insertIndex, stragglerValue);
     }
 
-    return (mainChain);
-}
-
-static void mergePairRangeDeque(std::deque< std::pair<int, int> >& pairs,
-                                std::deque< std::pair<int, int> >& buffer,
-                                size_t left,
-                                size_t middle,
-                                size_t right)
-{
-    size_t i;
-    size_t j;
-    size_t k;
-
-    i = left;
-    j = middle;
-    k = left;
-    while (i < middle && j < right)
-    {
-        if (pairs[i].second <= pairs[j].second)
-        {
-            buffer[k] = pairs[i];
-            ++i;
-        }
-        else
-        {
-            buffer[k] = pairs[j];
-            ++j;
-        }
-        ++k;
-    }
-    while (i < middle)
-    {
-        buffer[k] = pairs[i];
-        ++i;
-        ++k;
-    }
-    while (j < right)
-    {
-        buffer[k] = pairs[j];
-        ++j;
-        ++k;
-    }
-    for (size_t index = left; index < right; ++index)
-    {
-        pairs[index] = buffer[index];
-    }
-}
-
-static void mergeSortPairsDequeRec(std::deque< std::pair<int, int> >& pairs,
-                                  std::deque< std::pair<int, int> >& buffer,
-                                  size_t left,
-                                  size_t right)
-{
-    if (right - left <= 1)
-    {
-        return ;
-    }
-
-    size_t middle;
-
-    middle = left + (right - left) / 2;
-    mergeSortPairsDequeRec(pairs, buffer, left, middle);
-    mergeSortPairsDequeRec(pairs, buffer, middle, right);
-    mergePairRangeDeque(pairs, buffer, left, middle, right);
-}
-
-void PmergeMe::mergeSortPairsDeque(std::deque< std::pair<int, int> >& pairs)
-{
-    std::deque< std::pair<int, int> > buffer;
-
-    if (pairs.size() < 2)
-    {
-        return ;
-    }
-    buffer.resize(pairs.size());
-    mergeSortPairsDequeRec(pairs, buffer, 0, pairs.size());
+    return mainChain;
 }
 
 std::deque<int> PmergeMe::fordJohnsonSortDeque(const std::deque<int>& input)
 {
-    std::deque< std::pair<int, int> > pairs;
-    std::deque<int>                   mainChain;
-    bool                              hasStraggler;
-    int                               stragglerValue;
-    size_t                            processCount;
-
     if (input.size() <= 1)
-    {
-        return (input);
-    }
+        return input;
 
-    hasStraggler = (input.size() % 2) != 0;
-    stragglerValue = 0;
-    processCount = input.size();
+    const bool hasStraggler = (input.size() % 2) != 0;
+    int stragglerValue = 0;
+    size_t processCount = input.size();
+
     if (hasStraggler)
     {
         stragglerValue = input[input.size() - 1];
         processCount = input.size() - 1;
     }
 
-    for (size_t index = 0; index < processCount; index += 2)
-    {
-        int firstValue;
-        int secondValue;
+    std::deque< std::pair<int,int> > pairs;
 
-        firstValue = input[index];
-        secondValue = input[index + 1];
-        if (firstValue > secondValue)
+    for (size_t i = 0; i < processCount; i += 2)
+    {
+        int a = input[i];
+        int b = input[i + 1];
+        if (a > b)
         {
-            int tmp;
-
-            tmp = firstValue;
-            firstValue = secondValue;
-            secondValue = tmp;
+            int tmp = a; a = b; b = tmp;
         }
-        pairs.push_back(std::make_pair(firstValue, secondValue));
-    }
-
-    mergeSortPairsDeque(pairs);
-
-    mainChain.push_back(pairs[0].first);
-    for (size_t i = 0; i < pairs.size(); ++i)
-    {
-        mainChain.push_back(pairs[i].second);
+        pairs.push_back(std::make_pair(a, b));
     }
 
     if (pairs.size() > 1)
     {
-        size_t              pendingCount;
-        std::vector<size_t> insertionOrder;
+        std::deque<int> bigs;
+        for (size_t i = 0; i < pairs.size(); ++i)
+            bigs.push_back(pairs[i].second);
 
-        pendingCount = pairs.size() - 1;
-        insertionOrder = buildJacobsthalOrder(pendingCount);
+        std::deque<int> sortedBigs = fordJohnsonSortDeque(bigs);
+        reorderPairsBySortedBigsDeque(pairs, sortedBigs);
+    }
 
-        for (size_t oi = 0; oi < insertionOrder.size(); ++oi)
+    std::deque<int> mainChain;
+    mainChain.push_back(pairs[0].first);
+    for (size_t i = 0; i < pairs.size(); ++i)
+        mainChain.push_back(pairs[i].second);
+
+    if (pairs.size() > 1)
+    {
+        const size_t pendingCount = pairs.size() - 1;
+        const std::vector<size_t> order = buildJacobsthalOrder(pendingCount);
+
+        for (size_t oi = 0; oi < order.size(); ++oi)
         {
-            size_t pairIndex;
-
-            pairIndex = insertionOrder[oi];
+            const size_t pairIndex = order[oi];
             if (pairIndex == 0 || pairIndex >= pairs.size())
-            {
-                continue ;
-            }
+                continue;
 
-            int    smallValue;
-            int    largeValue;
-            size_t boundIndex;
+            const int smallValue = pairs[pairIndex].first;
+            const int bigValue   = pairs[pairIndex].second;
 
-            smallValue = pairs[pairIndex].first;
-            largeValue = pairs[pairIndex].second;
+            size_t boundIndex = indexOfValueDeque(mainChain, bigValue);
+            if (boundIndex > mainChain.size())
+                boundIndex = mainChain.size();
 
-            boundIndex = 0;
-            while (boundIndex < mainChain.size() && mainChain[boundIndex] != largeValue)
-            {
-                ++boundIndex;
-            }
-
-            size_t insertIndex;
-
-            insertIndex = lowerBoundIndex(mainChain, smallValue, 0, boundIndex);
+            const size_t insertIndex = lowerBoundIndex(mainChain, smallValue, 0, boundIndex);
             insertAt(mainChain, insertIndex, smallValue);
         }
     }
 
     if (hasStraggler)
     {
-        size_t insertIndex;
-
-        insertIndex = lowerBoundIndex(mainChain, stragglerValue, 0, mainChain.size());
+        const size_t insertIndex = lowerBoundIndex(mainChain, stragglerValue, 0, mainChain.size());
         insertAt(mainChain, insertIndex, stragglerValue);
     }
 
-    return (mainChain);
-}
-
-static void printVectorSequence(const std::vector<int>& sequence)
-{
-    for (size_t i = 0; i < sequence.size(); ++i)
-    {
-        std::cout << sequence[i];
-        if (i + 1 < sequence.size())
-        {
-            std::cout << " ";
-        }
-    }
+    return mainChain;
 }
 
 void PmergeMe::sortAndMeasure(const std::vector<int>& input)
 {
-    std::deque<int>   dequeInput;
-    long long         startVector;
-    long long         endVector;
-    long long         startDeque;
-    long long         endDeque;
-    std::vector<int>  sortedVector;
-    std::deque<int>   sortedDeque;
+    std::deque<int>  dequeInput;
+    std::vector<int> sortedVector;
+    std::deque<int>  sortedDeque;
 
     std::cout << "Before: ";
     printVectorSequence(input);
     std::cout << "\n";
 
-    startVector = nowMicros(); //time before algo
+    const double startVector = nowMicros();
     sortedVector = fordJohnsonSortVector(input);
-    endVector = nowMicros(); //time after
+    const double endVector = nowMicros();
 
+    const double startDeque = nowMicros();
     for (size_t i = 0; i < input.size(); ++i)
     {
         dequeInput.push_back(input[i]);
     }
-
-    startDeque = nowMicros();
     sortedDeque = fordJohnsonSortDeque(dequeInput);
-    endDeque = nowMicros();
+    const double endDeque = nowMicros();
 
     std::cout << "After: ";
     printVectorSequence(sortedVector);
@@ -485,14 +325,15 @@ void PmergeMe::sortAndMeasure(const std::vector<int>& input)
     if (sortedVector.size() != sortedDeque.size())
     {
         std::cerr << "Error\n";
-        return ;
+        return;
     }
     for (size_t i = 0; i < sortedVector.size(); ++i)
     {
         if (sortedVector[i] != sortedDeque[i])
         {
             std::cerr << "Error\n";
-            return ;
+            return;
         }
     }
 }
+
